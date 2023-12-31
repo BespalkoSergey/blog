@@ -1,16 +1,31 @@
 ---
+import Main from '../layouts/Main.astro'
+import Nav from '../components/Nav.astro'
+import { getBlogs } from '../db'
+import BlogTitle from '../components/BlogTitle.astro'
 
+const blogs = await getBlogs()
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Astro</title>
-  </head>
-  <body>
-    <h1>Astro</h1>
-  </body>
-</html>
+<Main title="Головна">
+  <Nav />
+
+  {
+    blogs.map((blog, index) => (
+      <div class="card" class:list={[{ 'margin-top': !!index }]}>
+        <BlogTitle blog={blog} />
+      </div>
+    ))
+  }
+</Main>
+
+<style>
+  .card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .margin-top {
+    margin-top: 40px;
+  }
+</style>

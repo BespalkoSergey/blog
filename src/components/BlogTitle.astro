@@ -1,0 +1,26 @@
+---
+import type { BlogType } from '../models'
+
+interface Props {
+  blog: BlogType
+}
+
+const { blog } = Astro.props
+---
+
+<div class="card">
+  <h3>{blog.title}</h3>
+  <p>{blog.description}</p>
+  <a href={new URL('/blog/' + blog.id, Astro.url)}>Детальніше -></a>
+</div>
+
+<style>
+  .card {
+    color: #f9fafb;
+    padding: 40px;
+    background-color: #1f2937;
+    border-radius: 5px;
+    max-width: 600px;
+    flex: 1;
+  }
+</style>
