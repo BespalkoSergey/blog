@@ -1,17 +1,29 @@
 ---
 import type { BlogType } from '../models'
+import { addZeros } from '../utils'
 
 interface Props {
   blog: BlogType
 }
 
 const { blog } = Astro.props
+
+const getDate = (b: BlogType) => {
+  const date = new Date(b.updated_at)
+  const day = date.getDate()
+  const month = date.getMonth() + 1
+  const year = date.getFullYear().toString().slice(-2)
+  return `${addZeros(day)}.${addZeros(month)}.${year}`
+}
 ---
 
 <div class="card">
   <h3>{blog.title}</h3>
   <p>{blog.description}</p>
-  <a class="link" href={'/blog/' + blog.id}>Детальніше -></a>
+  <div class="footer">
+    <time datetime={blog.updated_at}>{getDate(blog)}</time>
+    <a class="link" href={'/blog/' + blog.id}>Детальніше</a>
+  </div>
 </div>
 
 <style>
@@ -24,12 +36,16 @@ const { blog } = Astro.props
     flex: 1;
   }
   .link {
-    display: inline-block;
     margin-top: 10px;
     padding: 10px 20px;
     border-radius: 5px;
     background-color: #a78bfa;
     color: #f9fafb;
     text-decoration: none;
+  }
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 </style>
