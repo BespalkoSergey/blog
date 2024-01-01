@@ -8,12 +8,18 @@ interface Props {
 
 const { blog } = Astro.props
 
-const getDate = (b: BlogType) => {
+const getDate = (b: BlogType): string => {
   const date = new Date(b.updated_at)
   const day = date.getDate()
   const month = date.getMonth() + 1
   const year = date.getFullYear().toString().slice(-2)
   return `${addZeros(day)}.${addZeros(month)}.${year}`
+}
+
+const calculateReadingTime = (b: BlogType, averageReadingSpeed = 200, wordsPerPage = 300): number => {
+  const words = b.content_html.split(/\s+/).length
+  const minutesToRead = words / wordsPerPage / (averageReadingSpeed / 60)
+  return Math.ceil(minutesToRead)
 }
 ---
 
@@ -21,7 +27,11 @@ const getDate = (b: BlogType) => {
   <h3>{blog.title}</h3>
   <p>{blog.description}</p>
   <div class="footer">
-    <time datetime={blog.updated_at}>{getDate(blog)}</time>
+    <div class="sub-footer">
+      <time datetime={blog.updated_at}>{getDate(blog)}</time>
+      <p class="reading-time">На читання {calculateReadingTime(blog)} хв.</p>
+    </div>
+
     <a class="link" href={'/blog/' + blog.id}>Детальніше</a>
   </div>
 </div>
@@ -47,5 +57,14 @@ const getDate = (b: BlogType) => {
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+  .sub-footer {
+    display: flex;
+    align-items: end;
+    gap: 20px;
+  }
+  .reading-time {
+    font-size: 14px;
+    margin: 0;
   }
 </style>
