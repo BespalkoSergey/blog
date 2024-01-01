@@ -11,7 +11,7 @@ const { blog } = Astro.props
 <div class="card">
   <h3>{blog.title}</h3>
   <p>{blog.description}</p>
-  <a href={new URL('/blog/' + blog.id, Astro.url)}>Детальніше -></a>
+  <a class="link" href={'/blog/' + blog.id}>Детальніше -></a>
 </div>
 
 <style>
@@ -22,5 +22,14 @@ const { blog } = Astro.props
     border-radius: 5px;
     max-width: 600px;
     flex: 1;
+  }
+  .link {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #a78bfa;
+    color: #f9fafb;
+    text-decoration: none;
   }
 </style>
