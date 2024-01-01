@@ -1,8 +1,17 @@
 import type { BlogType } from './models'
+import mysql from 'mysql2'
+import dotenv from 'dotenv'
 
-export const getBlogs = async () => {
-  const response = await fetch('https://api.slingacademy.com/v1/sample-data/blog-posts?offset=0&limit=30')
-  const json = await response.json()
-  const blogs = json['blogs'] as BlogType[]
-  return blogs
-}
+dotenv.config()
+
+const pool = mysql.createPool(import.meta.env.CONNECTION_STRING)
+
+export const getBlogs = async (): Promise<BlogType[]> =>
+  new Promise(resolve => {
+    pool.getConnection(function (_, conn) {
+      conn.query('SELECT * FROM `blogs`', (_, result) => {
+        resolve(result as BlogType[])
+      })
+      pool.releaseConnection(conn)
+    })
+  })

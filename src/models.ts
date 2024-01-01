@@ -1,5 +1,4 @@
 export type BlogType = {
-  user_id: number
   title: string
   content_text: string
   photo_url: string
