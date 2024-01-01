@@ -18,15 +18,11 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm run build
-      - name: Remove files except dist
-        run: |
-          shopt -s extglob
-          rm -r !(dist)
       - name: rsync deploy
         uses: burnett01/rsync-deployments@5.2.1
         with:
           switches: -avzr --delete
-          path: .
+          path: dist/
           remote_host: ${{ secrets.REMOTE_HOST }}
           remote_user: ${{ secrets.REMOTE_USER }}
           remote_key: ${{ secrets.REMOTE_KEY }}
