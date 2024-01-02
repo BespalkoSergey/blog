@@ -1,9 +1,21 @@
 export type BlogType = {
-  title: string
-  photo_url: string
-  created_at: string
-  description: string
   id: number
+  title: string
+  img_url: string
+  description: string
+  category_keywords: string[]
   content_html: string
+  created_at: string
+  updated_at: string
+}
+
+export type RowType = {
+  id: number
+  title: string
+  img_url: string
+  description: string
+  category_keywords: string
+  content_html: string
+  created_at: string
   updated_at: string
 }

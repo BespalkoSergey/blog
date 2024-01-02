@@ -24,8 +24,19 @@ const calculateReadingTime = (b: BlogType, averageReadingSpeed = 200, wordsPerPa
 ---
 
 <div class="card">
-  <h3>{blog.title}</h3>
-  <p>{blog.description}</p>
+  <div class="main">
+    <div>
+      <h3>{blog.title}</h3>
+      <p>{blog.description}</p>
+    </div>
+
+    <div class="img-wrapper">
+      <img src={blog.img_url} alt="card image" />
+    </div>
+  </div>
+
+  <p class="keywords">{blog.category_keywords.map(keyword => <span>#{keyword}</span>)}</p>
+
   <div class="footer">
     <div class="sub-footer">
       <time datetime={blog.updated_at}>{getDate(blog)}</time>
@@ -62,9 +73,28 @@ const calculateReadingTime = (b: BlogType, averageReadingSpeed = 200, wordsPerPa
     display: flex;
     align-items: end;
     gap: 20px;
+    color: #9ca3af;
   }
   .reading-time {
     font-size: 14px;
     margin: 0;
+  }
+  .keywords {
+    display: flex;
+    gap: 20px;
+    color: #9ca3af;
+    font-size: 14px;
+  }
+  .main {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .img-wrapper {
+    width: 130px;
+  }
+  .img-wrapper img {
+    width: 100%;
+    height: auto;
   }
 </style>
