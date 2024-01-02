@@ -1,7 +1,6 @@
 ---
 import '../shared.css'
 import Main from '../layouts/Main.astro'
-import Nav from '../components/Nav.astro'
 import { getBlogs } from '../db'
 import BlogTitle from '../components/BlogTitle.astro'
 
@@ -9,8 +8,6 @@ const blogs = await getBlogs()
 ---
 
 <Main title="Головна">
-  <Nav />
-
   {
     blogs.map((blog, index) => (
       <div class="card" class:list={[{ 'margin-top': !!index }]}>
