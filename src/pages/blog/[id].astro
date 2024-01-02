@@ -17,7 +17,38 @@ const { blog } = Astro.props
 ---
 
 <Main title={blog.title}>
-  <pre>{JSON.stringify(blog, null, 2)}</pre>
-  <h1>{blog.title}</h1>
-  <div set:html={blog.content_html} />
+  <div class="blog-wrapper">
+    <div class="blog">
+      <img src={blog.img_url} alt="blog image" />
+      <h1>{blog.title}</h1>
+      <div set:html={blog.content_html} />
+    </div>
+  </div>
 </Main>
+
+<style>
+  .blog {
+    display: flex;
+    flex-direction: column;
+    max-width: 900px;
+    border-radius: 5px;
+    background-color: #1f2937;
+    padding: 40px;
+  }
+  .blog img {
+    width: 50%;
+    height: auto;
+    align-self: center;
+  }
+  .blog h1,
+  .blog h2,
+  .blog h3 {
+    align-self: center;
+    margin-top: 30px;
+  }
+  .blog-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>
