@@ -1,9 +1,11 @@
 ---
 interface Props {
   title: string
+  description: string
+  preview_image: string
 }
 
-const { title } = Astro.props
+const { title, description, preview_image } = Astro.props
 ---
 
 <html lang="uk-UA">
@@ -11,8 +13,17 @@ const { title } = Astro.props
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <link rel="canonical" href="https://blog.my-space.org.ua/" />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://blog.my-space.org.ua/" />
+    <meta property="og:locale" content="uk-UA" />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content="Блог" />
+    <meta property="og:image" content={preview_image} />
+    <meta property="og:image:alt" content={description} />
   </head>
   <body>
     <slot />

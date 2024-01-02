@@ -7,7 +7,11 @@ import BlogTitle from '../components/BlogTitle.astro'
 const blogs = await getBlogs()
 ---
 
-<Main title="Головна">
+<Main
+  title="Головна"
+  description="Блог про засоби розробки та програмне забезпечення, повний список статей"
+  preview_image="https://blog.my-space.org.ua/og/blog.jpg"
+>
   {
     blogs.map((blog, index) => (
       <div class="card" class:list={[{ 'margin-top': !!index }]}>

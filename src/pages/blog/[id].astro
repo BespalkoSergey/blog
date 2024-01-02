@@ -17,7 +17,7 @@ interface Props {
 const { blog } = Astro.props
 ---
 
-<Main title={blog.title}>
+<Main title={'Стаття ' + blog.id} description={blog.title} preview_image={blog.img_url}>
   <div class="blog-wrapper">
     <div class="blog">
       <img src={blog.img_url} alt="blog image" />
