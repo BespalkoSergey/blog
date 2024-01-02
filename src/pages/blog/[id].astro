@@ -3,6 +3,7 @@ import '../../shared.css'
 import { getBlogs } from '../../db'
 import Main from '../../layouts/Main.astro'
 import { type BlogType } from '../../models'
+import { calculateReadingTime, getDate } from '../../utils'
 
 export async function getStaticPaths() {
   const blogs = await getBlogs()
@@ -21,12 +22,21 @@ const { blog } = Astro.props
     <div class="blog">
       <img src={blog.img_url} alt="blog image" />
       <h1>{blog.title}</h1>
+      <h4 class="sub-title">
+        <span>Час на читання {calculateReadingTime(blog)} хв.</span>
+        <span>Стаття була оновлена {getDate(blog)}</span>
+      </h4>
       <div set:html={blog.content_html} />
     </div>
   </div>
 </Main>
 
 <style>
+  .blog-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   .blog {
     display: flex;
     flex-direction: column;
@@ -42,13 +52,14 @@ const { blog } = Astro.props
   }
   .blog h1,
   .blog h2,
-  .blog h3 {
+  .blog h3,
+  .blog h4 {
     align-self: center;
     margin-top: 30px;
   }
-  .blog-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .blog .sub-title {
+    margin-top: 0;
+    font-size: 14px;
+    color: #9ca3af;
   }
 </style>

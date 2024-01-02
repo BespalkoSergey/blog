@@ -1,26 +1,12 @@
 ---
 import type { BlogType } from '../models'
-import { addZeros } from '../utils'
+import { calculateReadingTime, getDate } from '../utils'
 
 interface Props {
   blog: BlogType
 }
 
 const { blog } = Astro.props
-
-const getDate = (b: BlogType): string => {
-  const date = new Date(b.updated_at)
-  const day = date.getDate()
-  const month = date.getMonth() + 1
-  const year = date.getFullYear().toString().slice(-2)
-  return `${addZeros(day)}.${addZeros(month)}.${year}`
-}
-
-const calculateReadingTime = (b: BlogType, averageReadingSpeed = 200, wordsPerPage = 300): number => {
-  const words = b.content_html.split(/\s+/).length
-  const minutesToRead = words / wordsPerPage / (averageReadingSpeed / 60)
-  return Math.ceil(minutesToRead)
-}
 ---
 
 <div class="card">
