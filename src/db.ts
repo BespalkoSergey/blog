@@ -9,14 +9,13 @@ const pool = mysql.createPool(import.meta.env.CONNECTION_STRING)
 export const getBlogs = async (): Promise<BlogType[]> =>
   new Promise(resolve => {
     pool.getConnection(function (_, conn) {
-      conn.query('SELECT * FROM `blogs`', (_, result) => {
+      conn.query('SELECT * FROM `blogs` ORDER BY `blogs`.`updated_at` DESC', (_, result) => {
         const rows = Array.isArray(result) ? (result as RowType[]) : []
         const blogs = rows.map<BlogType>(({ category_keywords, ...row }) => ({
           ...row,
           category_keywords: category_keywords.split(',').map((keyword: string) => keyword.trim())
         }))
-        const sortedFromNearestToLatestDate = blogs.toSorted((a, b) => (new Date(a.updated_at).getTime() - new Date(b.updated_at).getTime()) * -1)
-        resolve(sortedFromNearestToLatestDate)
+        resolve(blogs)
       })
       pool.releaseConnection(conn)
     })
