@@ -15,7 +15,6 @@ export const getBlogs = async (): Promise<BlogType[]> =>
   new Promise((resolve, reject) => {
     db.all<RowType>('SELECT * FROM `blogs` ORDER BY `blogs`.`updated_at` DESC', (err, rows) => {
       if (err) {
-        console.log(err)
         reject(err)
         return
       }
