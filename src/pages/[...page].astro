@@ -1,0 +1,40 @@
+---
+import '../shared.css'
+import Main from '../layouts/Main.astro'
+import { getBlogs } from '../db'
+import BlogTitle from '../components/BlogTitle.astro'
+import type { PageType, BlogType } from '../models'
+import Paginator from '../components/Paginator.astro'
+
+interface Props {
+  page: PageType<BlogType>
+}
+
+export async function getStaticPaths({ paginate }: { paginate: (blogs: BlogType[], props: { pageSize: number }) => unknown }) {
+  const blogs = await getBlogs()
+  return paginate(blogs, { pageSize: 5 })
+}
+
+const { page } = Astro.props
+---
+
+<Main
+  title="Головна"
+  description="Блог про засоби розробки та програмне забезпечення, повний список статей"
+  preview_image="https://blog.my-space.org.ua/og/blog.jpg"
+>
+  <div class="wrapper">
+    {page.data.map(blog => <BlogTitle blog={blog} />)}
+    <Paginator page={page} />
+  </div>
+</Main>
+
+<style>
+  .wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 40px;
+  }
+</style>

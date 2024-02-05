@@ -1,0 +1,53 @@
+---
+import type { BlogType, PageType } from '../models'
+
+interface Props {
+  page: PageType<BlogType>
+}
+
+type Link = {
+  href: string
+  isCurrent: boolean
+  title: string
+}
+
+const { page } = Astro.props
+
+const links: Link[] = ((item: PageType<BlogType>) => {
+  const list = []
+  for (let index = 1; index <= item.lastPage; index++) {
+    list.push({
+      isCurrent: item.currentPage === index,
+      href: '/' + (index > 1 ? index : ''),
+      title: index.toString()
+    })
+  }
+  return list
+})(page)
+---
+
+<nav>
+  {
+    links.map(link => (
+      <a class:list={[{ current: !!link.isCurrent }, 'link']} href={link.href}>
+        {link.title}
+      </a>
+    ))
+  }
+</nav>
+
+<style>
+  nav {
+    display: flex;
+    gap: 10px;
+  }
+
+  .current {
+    color: #9ca3af;
+    pointer-events: none;
+  }
+
+  .link {
+    text-decoration: none;
+  }
+</style>

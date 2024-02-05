@@ -6,16 +6,21 @@ import { dirname, resolve } from 'path'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
+const indexOfBlog = __dirname.lastIndexOf('blog')
+const blogDirPath = __dirname.substring(0, indexOfBlog + 'blog'.length)
+const databaseDirPath = resolve(blogDirPath, 'database.db')
 
 dotenv.config()
 
-const db = new sqlite3.Database(resolve(__dirname, '../', 'database.db'))
+const db = new sqlite3.Database(databaseDirPath)
 
 export const getBlogs = async (): Promise<BlogType[]> =>
-  new Promise((resolve, reject) => {
+  new Promise((res, rej) => {
+    console.log(databaseDirPath)
+
     db.all<RowType>('SELECT * FROM `blogs` ORDER BY `blogs`.`updated_at` DESC', (err, rows) => {
       if (err) {
-        reject(err)
+        rej(err)
         return
       }
 
@@ -24,6 +29,6 @@ export const getBlogs = async (): Promise<BlogType[]> =>
         category_keywords: category_keywords.split(',').map((keyword: string) => keyword.trim())
       }))
 
-      resolve(blogs)
+      res(blogs)
     })
   })

@@ -19,3 +19,20 @@ export type RowType = {
   created_at: string
   updated_at: string
 }
+
+export type PageType<Data> = {
+  data: Data[]
+  start: number
+  end: number
+  size: number
+  total: number
+  currentPage: number
+  lastPage: number
+  url: UrlType
+}
+
+export type UrlType = {
+  current: string
+  next: string
+  prev: string
+}
