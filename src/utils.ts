@@ -15,4 +15,3 @@ export const calculateReadingTime = (b: BlogType, averageReadingSpeed = 200, wor
   const minutesToRead = words / wordsPerPage / (averageReadingSpeed / 60)
   return Math.ceil(minutesToRead)
 }
-

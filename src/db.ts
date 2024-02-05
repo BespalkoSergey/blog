@@ -1,22 +1,30 @@
 import type { BlogType, RowType } from './models'
-import mysql from 'mysql2'
+import sqlite3 from 'sqlite3'
 import dotenv from 'dotenv'
+import { fileURLToPath } from 'url'
+import { dirname, resolve } from 'path'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 dotenv.config()
 
-const pool = mysql.createPool(import.meta.env.CONNECTION_STRING)
+const db = new sqlite3.Database(resolve(__dirname, '../', 'database.db'))
 
 export const getBlogs = async (): Promise<BlogType[]> =>
-  new Promise(resolve => {
-    pool.getConnection(function (_, conn) {
-      conn.query('SELECT * FROM `blogs` ORDER BY `blogs`.`updated_at` DESC', (_, result) => {
-        const rows = Array.isArray(result) ? (result as RowType[]) : []
-        const blogs = rows.map<BlogType>(({ category_keywords, ...row }) => ({
-          ...row,
-          category_keywords: category_keywords.split(',').map((keyword: string) => keyword.trim())
-        }))
-        resolve(blogs)
-      })
-      pool.releaseConnection(conn)
+  new Promise((resolve, reject) => {
+    db.all<RowType>('SELECT * FROM `blogs` ORDER BY `blogs`.`updated_at` DESC', (err, rows) => {
+      if (err) {
+        console.log(err)
+        reject(err)
+        return
+      }
+
+      const blogs = rows.map<BlogType>(({ category_keywords, ...row }) => ({
+        ...row,
+        category_keywords: category_keywords.split(',').map((keyword: string) => keyword.trim())
+      }))
+
+      resolve(blogs)
     })
   })
